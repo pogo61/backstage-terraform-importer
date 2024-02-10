@@ -53,19 +53,21 @@ def define_environment(env, path):
 
 # define the Catalog-info.yaml file for the ResourceComponent entity
 def define_resource_component(tfjson, env_path, env):
-    module_name = extract_keys(tfjson)
+    module_names = extract_keys(tfjson)
 
-    module_path_key = extract_keys(tfjson[module_name[0]])
+    module_path_keys = extract_keys(tfjson[module_names[0]])
 
-    rel_path = tfjson[module_name[0]][module_path_key[0]]
+    rel_path = tfjson[module_names[0]][module_path_keys[0]]
 
     path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
 
     resource_list = []
     variable_list = []
+    resource_file_list = []
     for file in os.listdir(path=path):
-        if file.endswith(".tf") and not (fnmatch.fnmatch(file, 'main.tf') or fnmatch.fnmatch(file, 'variables.tf')):
+        if file.endswith(".tf") and ['main.tf', 'variables.tf', 'data_sources.tf', 'data.tf', 'local.tf', 'provider.tf'].count(file) == 0:
             resource_list.append('resource:' + file.split('.', 1)[0])
+            resource_file_list.append(file)
         elif file.endswith(".tf") and (fnmatch.fnmatch(file, 'main.tf') or fnmatch.fnmatch(file, 'variables.tf')):
             variable_list = get_variables(path, file)
 
@@ -73,8 +75,8 @@ def define_resource_component(tfjson, env_path, env):
         apiVersion='backstage.io/v1alpha1',
         kind='ResourceComponent',
         metadata=dict(
-            name=module_name[0],
-            description=module_name[0] + ' terraform module'
+            name=module_names[0],
+            description=module_names[0] + ' terraform module'
         ),
         spec=dict(
             type='terraform',
@@ -86,11 +88,18 @@ def define_resource_component(tfjson, env_path, env):
         )
     )
 
-    with open(path + '/catalog-info.yaml', 'a+') as f:
+    with open(path + '/catalog-info.yaml', 'w') as f:
         f.write('---\n')
     f.close()
     with open(path + '/catalog-info.yaml', 'a+') as outfile:
         yaml.dump(data, outfile, default_flow_style=False)
+
+    # for each resource terraform file found in the module directory,
+    # create a Resource entity in the ResourceComponents /catalog-info.yaml to match the dependsOn list
+    for file in resource_file_list:
+        resource_json = parsefile(path + '/' + file)
+        for resource in resource_json['resource']:
+            define_resource(resource, path)
 
 
 # define the Catalog-info.yaml file for the Resource entity
@@ -99,15 +108,15 @@ def define_resource(tfjson, path):
         f.write('---\n')
     f.close()
 
-    resource_type = extract_keys(tfjson)
-    resource_name = extract_keys(tfjson[resource_type[0]])
+    resource_types = extract_keys(tfjson)
+    resource_names = extract_keys(tfjson[resource_types[0]])
 
     data = dict(
         apiVersion='backstage.io/v1alpha1',
         kind='Resource',
         metadata=dict(
-            name=resource_type[0],
-            description='resource ' + resource_type[0] + ' with name ' + resource_name[0],
+            name=resource_types[0],
+            description='resource ' + resource_types[0] + ' with name ' + resource_names[0],
         ),
         spec=dict(
             type='terraform',
