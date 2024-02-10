@@ -54,11 +54,9 @@ def define_environment(env, path):
 # define the Catalog-info.yaml file for the ResourceComponent entity
 def define_resource_component(tfjson, env_path, env):
     module_names = extract_keys(tfjson)
-
     module_path_keys = extract_keys(tfjson[module_names[0]])
 
     rel_path = tfjson[module_names[0]][module_path_keys[0]]
-
     path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
 
     resource_list = []
