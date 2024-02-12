@@ -12,6 +12,11 @@ This Python-based utility has been built to scan your Terraform files and auto-g
 
 depending on what it finds.
 
+---
+**NOTE**
+This is an opinionated utility and only supports modules defined in the same repo as the base terraform. 
+Future versions may support git/github based modules
+
 ## Using the utility
 1. clone this repo to your local dev machine 
 2. simply type `python3 terraimport.py` in the root directory of the cloned repo
