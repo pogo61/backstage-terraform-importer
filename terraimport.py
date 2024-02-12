@@ -1,5 +1,4 @@
 #!/bin/python
-import validators
 import yaml
 import hcl2
 import os
