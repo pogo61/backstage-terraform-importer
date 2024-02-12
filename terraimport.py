@@ -1,4 +1,5 @@
 #!/bin/python
+import validators
 import yaml
 import hcl2
 import os
@@ -56,17 +57,26 @@ def define_resource_component(tfjson, env_path, env):
     module_path_keys = extract_keys(tfjson[module_names[0]])
 
     rel_path = tfjson[module_names[0]][module_path_keys[0]]
+    # print(rel_path)
+    # if validators.url(rel_path):
+    #     print("This version of the utility doesn't support remote, or url based, modules")
+    #     return
+
     path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
 
     resource_list = []
     variable_list = []
     resource_file_list = []
-    for file in os.listdir(path=path):
-        if file.endswith(".tf") and ['main.tf', 'variables.tf', 'data_sources.tf', 'data.tf', 'local.tf', 'provider.tf'].count(file) == 0:
-            resource_list.append('resource:' + file.split('.', 1)[0])
-            resource_file_list.append(file)
-        elif file.endswith(".tf") and (fnmatch.fnmatch(file, 'main.tf') or fnmatch.fnmatch(file, 'variables.tf')):
-            variable_list = get_variables(path, file)
+    try:
+        for file in os.listdir(path=path):
+            if file.endswith(".tf") and ['main.tf', 'variables.tf', 'data_sources.tf', 'data.tf', 'local.tf', 'provider.tf'].count(file) == 0:
+                resource_list.append('resource:' + file.split('.', 1)[0])
+                resource_file_list.append(file)
+            elif file.endswith(".tf") and (fnmatch.fnmatch(file, 'main.tf') or fnmatch.fnmatch(file, 'variables.tf')):
+                variable_list = get_variables(path, file)
+    except FileNotFoundError:
+        print("This version of the utility doesn't support remote, or url based, modules")
+        return
 
     data = dict(
         apiVersion='backstage.io/v1alpha1',
@@ -134,8 +144,9 @@ def create_catalog_defs(tf_name, env):
     define_environment(env, env_dir)
 
     # if the base Terraform has resources define in the base, define the catalog-info.yaml for the Resource entity/ies
-    for resource in file_json['resource']:
-        define_resource(resource, env_dir)
+    if file_json.get('resource'):
+        for resource in file_json['resource']:
+            define_resource(resource, env_dir)
 
     # check to see if there are resource files in the base directory and create Resource def in the
     # catalog-info.yaml file for the Environment entity id there is
