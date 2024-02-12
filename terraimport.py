@@ -57,11 +57,6 @@ def define_resource_component(tfjson, env_path, env):
     module_path_keys = extract_keys(tfjson[module_names[0]])
 
     rel_path = tfjson[module_names[0]][module_path_keys[0]]
-    # print(rel_path)
-    # if validators.url(rel_path):
-    #     print("This version of the utility doesn't support remote, or url based, modules")
-    #     return
-
     path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
 
     resource_list = []
