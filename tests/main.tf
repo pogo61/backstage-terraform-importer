@@ -17,4 +17,8 @@ module "eks_example_fargate_profile" {
   version = "20.2.1"
 }
 
-
+resource "aws_ssm_parameter" "validated_image" {
+  name  = "/core_infrastructure/latest_ecs_ami"
+  type  = "String"
+  value = data.aws_ssm_parameter.ecs_ami.value
+}

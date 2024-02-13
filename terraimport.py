@@ -151,8 +151,9 @@ def create_catalog_defs(tf_name, env):
                 define_resource(resource, env_dir)
 
     # if the base Terraform has uses modules, define the catalog-info.yaml for the ResourceComponents entity/ies
-    for module in file_json['module']:
-        define_resource_component(module, env_dir, env)
+    if file_json.get('module'):
+        for module in file_json['module']:
+            define_resource_component(module, env_dir, env)
 
 
 if __name__ == "__main__":
