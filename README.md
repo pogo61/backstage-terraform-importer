@@ -14,8 +14,9 @@ depending on what it finds.
 
 ---
 **NOTE**
-This is an opinionated utility and only supports modules defined in the same repo as the base terraform. 
-Future versions may support git/github based modules
+This is an opinionated utility and only supports modules defined in the same repo as the base terraform and reachable by the File system
+Or where the module is defined in a remote repo or Terraform Registry, the 'terraform get' command must be run prior to this utility
+--- 
 
 ## Using the utility
 1. clone this repo to your local dev machine 

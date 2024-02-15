@@ -12,10 +12,25 @@ terraform {
   }
 }
 
-module "eks_example_fargate_profile" {
-  source  = "terraform-aws-modules/eks/aws//examples/fargate_profile"
-  version = "20.2.1"
+module "ecs-cluster-terraform" {
+  source  = "git::https://github.com/pogo61/terraform-ecs-cluster-module.git"
 }
+
+module "iam" {
+  source  = "terraform-aws-modules/iam/aws"
+}
+
+module "alb" {
+  source  = "terraform-aws-modules/alb/aws"
+  version = "9.7.0"
+}
+
+#module "ecs" {
+#  source  = "terraform-aws-modules/ecs/aws"
+#  version = "5.9.0"
+#}
+
+
 
 resource "aws_ssm_parameter" "validated_image" {
   name  = "/core_infrastructure/latest_ecs_ami"

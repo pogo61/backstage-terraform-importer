@@ -161,4 +161,3 @@ cython_debug/
 #.idea/
 /backstage-terraform-importer.iml
 /tests/.terraform/
-/tests/catalog-info.yaml
