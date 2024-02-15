@@ -26,6 +26,7 @@ Or where the module is defined in a remote repo or Terraform Registry, the 'terr
    2. the name you call that environment
 
 ```
+ **NOTE** if the terraform uses repo-based modules, YOU MUST have run a "terraform get" before this utility
 The name of the base "Environment" Terraform File to be parsed: /Users/paulpog/IdeaProjects/ecs-cluster-terraform/deployment/dev/main.tf
 The name of the "Environment to be defined in Backstage": dev
 
@@ -43,6 +44,18 @@ Process finished with exit code 0
       2. the Resource entity for every resource in the resource list
 4. if there are resources in the base terraform file it will append Resource entity definitions for those in the catalog-info.yaml in the same folder that the base terraform file
 5. if there are resource terraform files in the folder of the base terraform file it will append Resource entity definitions for those in the catalog-info.yaml in the same folder that the base terraform file
+6. The output from the utility will be different depending where the module is defined:
+   1. If, as per v1.0.0 of the utility, the module(s) are defined in teh same repo, or accessible on the same file System, then they'll be located as per 3.iii above
+   2. If the modules are in different repos supported by Terraform as per [the Module Sources documentation](https://developer.hashicorp.com/terraform/language/modules/sources),and the catalog-info files don't exist, then they'll be placed into the folders for the source code under the `.terraform` folder. I.E. where the modules were downloaded by terraform via the `terraform get`. These files should really be added to the source repo's and used there. Because of this you'll receive this warning message:
+   ```
+   The module should already have a Backstage ResourceComponent definition
+   creating a temporary on in the <path where the module code is> directory. Add this to your module repo!
+   ```
+   If, however, there already are catalog-info file(s) in those folders  you'll receive this message, and no files will be created: 
+   ```
+   The module already has a Backstage ResourceComponent definition - use this
+   ```
+   3. If you have modules defined that are from the Hashicorp Module Registry, then the utility will create a series of imbeaded `modules` folders as per the example in the `tests` folder in this repo. They will be prefixed with the module/submodule name. This is because these files, obviously, can't be added to the module's registry and need to be located somewhere for backstage to reference them. 
 
 Once the utility is finished you can then define the created catalog-info.yaml files to your
 Backstage instance in the same manner as defined in the [detailed Medium article](https://medium.com/@paulpogonoski/backstage-iac-support-392f34ea118e) that describes their use.
