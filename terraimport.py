@@ -56,7 +56,6 @@ def define_environment(env, path):
 def define_resource_component(tfjson, env_path, env):
     module_names = extract_keys(tfjson)
     module_path_keys = extract_keys(tfjson[module_names[0]])
-    # print('env_path : '+env_path)
     rel_path = tfjson[module_names[0]][module_path_keys[0]]
     path_prefix = rel_path.split('/', 1)[0]
     resource_list = []
@@ -76,7 +75,6 @@ def define_resource_component(tfjson, env_path, env):
     elif 'terraform' in path_prefix:
         path = env_path.split('/')[1] + '/' + '.terraform/modules/' + module_names[0]
         catalog_path = env_path.split('/')[1] + '/modules'
-        # print('catalog_path : '+catalog_path)
         if not os.path.exists(catalog_path):
             os.makedirs(catalog_path)
         terraform_module(path, catalog_path, env, module_names)
