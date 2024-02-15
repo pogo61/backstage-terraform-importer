@@ -6,8 +6,8 @@ metadata:
   name: iam-account
 spec:
   dependsOn:
-  - resource:aws_iam_account_alias
-  - resource:aws_iam_account_password_policy
+  - resource:aws_iam_account_alias-this
+  - resource:aws_iam_account_password_policy-this
   environment:
   - dev
   lifecycle: experimental
@@ -31,7 +31,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_account_alias with name this
-  name: aws_iam_account_alias
+  name: aws_iam_account_alias-this
 spec:
   owner: platform-team
   type: terraform
@@ -40,7 +40,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_account_password_policy with name this
-  name: aws_iam_account_password_policy
+  name: aws_iam_account_password_policy-this
 spec:
   owner: platform-team
   type: terraform

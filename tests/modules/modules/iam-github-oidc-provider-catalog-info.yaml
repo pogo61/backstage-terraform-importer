@@ -6,7 +6,7 @@ metadata:
   name: iam-github-oidc-provider
 spec:
   dependsOn:
-  - resource:aws_iam_openid_connect_provider
+  - resource:aws_iam_openid_connect_provider-this
   environment:
   - dev
   lifecycle: experimental
@@ -23,7 +23,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_openid_connect_provider with name this
-  name: aws_iam_openid_connect_provider
+  name: aws_iam_openid_connect_provider-this
 spec:
   owner: platform-team
   type: terraform

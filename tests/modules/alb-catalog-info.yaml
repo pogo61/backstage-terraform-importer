@@ -7,19 +7,19 @@ metadata:
 spec:
   dependsOn:
   - resourcecomponent:lb_trust_store
-  - resource:aws_lb
-  - resource:aws_lb_listener
-  - resource:aws_lb_listener_rule
-  - resource:aws_lb_listener_certificate
-  - resource:aws_lb_target_group
-  - resource:aws_lb_target_group_attachment
-  - resource:aws_lb_target_group_attachment
-  - resource:aws_lambda_permission
-  - resource:aws_security_group
-  - resource:aws_vpc_security_group_egress_rule
-  - resource:aws_vpc_security_group_ingress_rule
-  - resource:aws_route53_record
-  - resource:aws_wafv2_web_acl_association
+  - resource:aws_lb-this
+  - resource:aws_lb_listener-this
+  - resource:aws_lb_listener_rule-this
+  - resource:aws_lb_listener_certificate-this
+  - resource:aws_lb_target_group-this
+  - resource:aws_lb_target_group_attachment-this
+  - resource:aws_lb_target_group_attachment-additional
+  - resource:aws_lambda_permission-this
+  - resource:aws_security_group-this
+  - resource:aws_vpc_security_group_egress_rule-this
+  - resource:aws_vpc_security_group_ingress_rule-this
+  - resource:aws_route53_record-this
+  - resource:aws_wafv2_web_acl_association-this
   environment:
   - dev
   lifecycle: experimental
@@ -75,7 +75,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb with name this
-  name: aws_lb
+  name: aws_lb-this
 spec:
   owner: platform-team
   type: terraform
@@ -84,7 +84,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_listener with name this
-  name: aws_lb_listener
+  name: aws_lb_listener-this
 spec:
   owner: platform-team
   type: terraform
@@ -93,7 +93,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_listener_rule with name this
-  name: aws_lb_listener_rule
+  name: aws_lb_listener_rule-this
 spec:
   owner: platform-team
   type: terraform
@@ -102,7 +102,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_listener_certificate with name this
-  name: aws_lb_listener_certificate
+  name: aws_lb_listener_certificate-this
 spec:
   owner: platform-team
   type: terraform
@@ -111,7 +111,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_target_group with name this
-  name: aws_lb_target_group
+  name: aws_lb_target_group-this
 spec:
   owner: platform-team
   type: terraform
@@ -120,7 +120,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_target_group_attachment with name this
-  name: aws_lb_target_group_attachment
+  name: aws_lb_target_group_attachment-this
 spec:
   owner: platform-team
   type: terraform
@@ -129,7 +129,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_target_group_attachment with name additional
-  name: aws_lb_target_group_attachment
+  name: aws_lb_target_group_attachment-additional
 spec:
   owner: platform-team
   type: terraform
@@ -138,7 +138,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lambda_permission with name this
-  name: aws_lambda_permission
+  name: aws_lambda_permission-this
 spec:
   owner: platform-team
   type: terraform
@@ -147,7 +147,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_security_group with name this
-  name: aws_security_group
+  name: aws_security_group-this
 spec:
   owner: platform-team
   type: terraform
@@ -156,7 +156,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_vpc_security_group_egress_rule with name this
-  name: aws_vpc_security_group_egress_rule
+  name: aws_vpc_security_group_egress_rule-this
 spec:
   owner: platform-team
   type: terraform
@@ -165,7 +165,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_vpc_security_group_ingress_rule with name this
-  name: aws_vpc_security_group_ingress_rule
+  name: aws_vpc_security_group_ingress_rule-this
 spec:
   owner: platform-team
   type: terraform
@@ -174,7 +174,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_route53_record with name this
-  name: aws_route53_record
+  name: aws_route53_record-this
 spec:
   owner: platform-team
   type: terraform
@@ -183,7 +183,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_wafv2_web_acl_association with name this
-  name: aws_wafv2_web_acl_association
+  name: aws_wafv2_web_acl_association-this
 spec:
   owner: platform-team
   type: terraform

@@ -11,7 +11,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_ssm_parameter with name validated_image
-  name: aws_ssm_parameter
+  name: aws_ssm_parameter-validated_image
 spec:
   owner: platform-team
   type: terraform

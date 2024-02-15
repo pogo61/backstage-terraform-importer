@@ -6,12 +6,12 @@ metadata:
   name: iam-assumable-roles-with-saml
 spec:
   dependsOn:
-  - resource:aws_iam_role
-  - resource:aws_iam_role_policy_attachment
-  - resource:aws_iam_role
-  - resource:aws_iam_role_policy_attachment
-  - resource:aws_iam_role
-  - resource:aws_iam_role_policy_attachment
+  - resource:aws_iam_role-admin
+  - resource:aws_iam_role_policy_attachment-admin
+  - resource:aws_iam_role-poweruser
+  - resource:aws_iam_role_policy_attachment-poweruser
+  - resource:aws_iam_role-readonly
+  - resource:aws_iam_role_policy_attachment-readonly
   environment:
   - dev
   lifecycle: experimental
@@ -48,7 +48,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role with name admin
-  name: aws_iam_role
+  name: aws_iam_role-admin
 spec:
   owner: platform-team
   type: terraform
@@ -57,7 +57,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role_policy_attachment with name admin
-  name: aws_iam_role_policy_attachment
+  name: aws_iam_role_policy_attachment-admin
 spec:
   owner: platform-team
   type: terraform
@@ -66,7 +66,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role with name poweruser
-  name: aws_iam_role
+  name: aws_iam_role-poweruser
 spec:
   owner: platform-team
   type: terraform
@@ -75,7 +75,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role_policy_attachment with name poweruser
-  name: aws_iam_role_policy_attachment
+  name: aws_iam_role_policy_attachment-poweruser
 spec:
   owner: platform-team
   type: terraform
@@ -84,7 +84,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role with name readonly
-  name: aws_iam_role
+  name: aws_iam_role-readonly
 spec:
   owner: platform-team
   type: terraform
@@ -93,7 +93,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role_policy_attachment with name readonly
-  name: aws_iam_role_policy_attachment
+  name: aws_iam_role_policy_attachment-readonly
 spec:
   owner: platform-team
   type: terraform

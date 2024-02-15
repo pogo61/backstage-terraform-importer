@@ -6,10 +6,10 @@ metadata:
   name: iam-group-with-assumable-roles-policy
 spec:
   dependsOn:
-  - resource:aws_iam_policy
-  - resource:aws_iam_group
-  - resource:aws_iam_group_policy_attachment
-  - resource:aws_iam_group_membership
+  - resource:aws_iam_policy-this
+  - resource:aws_iam_group-this
+  - resource:aws_iam_group_policy_attachment-this
+  - resource:aws_iam_group_membership-this
   environment:
   - dev
   lifecycle: experimental
@@ -26,7 +26,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_policy with name this
-  name: aws_iam_policy
+  name: aws_iam_policy-this
 spec:
   owner: platform-team
   type: terraform
@@ -35,7 +35,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_group with name this
-  name: aws_iam_group
+  name: aws_iam_group-this
 spec:
   owner: platform-team
   type: terraform
@@ -44,7 +44,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_group_policy_attachment with name this
-  name: aws_iam_group_policy_attachment
+  name: aws_iam_group_policy_attachment-this
 spec:
   owner: platform-team
   type: terraform
@@ -53,7 +53,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_group_membership with name this
-  name: aws_iam_group_membership
+  name: aws_iam_group_membership-this
 spec:
   owner: platform-team
   type: terraform

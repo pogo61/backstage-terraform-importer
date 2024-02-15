@@ -171,7 +171,8 @@ def terraform_module(path, cat_path, env, module_names):
         if mod_json.get('resource'):
             for resource in mod_json['resource']:
                 res = extract_keys(resource)
-                module_list.append('resource:' + res[0])
+                res_names = extract_keys(resource[res[0]])
+                module_list.append('resource:' + res[0] + '-' + res_names[0])
 
     # create the ResourceComponent def for the Terraform registry module
     data = dict(
@@ -223,7 +224,7 @@ def define_resource(tfjson, path, mod_name='none'):
         apiVersion='backstage.io/v1alpha1',
         kind='Resource',
         metadata=dict(
-            name=resource_types[0],
+            name=resource_types[0] + '-' + resource_names[0],
             description='resource ' + resource_types[0] + ' with name ' + resource_names[0],
         ),
         spec=dict(

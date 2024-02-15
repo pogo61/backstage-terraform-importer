@@ -6,8 +6,8 @@ metadata:
   name: lb_trust_store
 spec:
   dependsOn:
-  - resource:aws_lb_trust_store
-  - resource:aws_lb_trust_store_revocation
+  - resource:aws_lb_trust_store-this
+  - resource:aws_lb_trust_store_revocation-this
   environment:
   - dev
   lifecycle: experimental
@@ -28,7 +28,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_trust_store with name this
-  name: aws_lb_trust_store
+  name: aws_lb_trust_store-this
 spec:
   owner: platform-team
   type: terraform
@@ -37,7 +37,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_lb_trust_store_revocation with name this
-  name: aws_lb_trust_store_revocation
+  name: aws_lb_trust_store_revocation-this
 spec:
   owner: platform-team
   type: terraform

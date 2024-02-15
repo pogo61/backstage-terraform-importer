@@ -6,8 +6,8 @@ metadata:
   name: iam-assumable-role-with-saml
 spec:
   dependsOn:
-  - resource:aws_iam_role
-  - resource:aws_iam_role_policy_attachment
+  - resource:aws_iam_role-this
+  - resource:aws_iam_role_policy_attachment-custom
   environment:
   - dev
   lifecycle: experimental
@@ -35,7 +35,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role with name this
-  name: aws_iam_role
+  name: aws_iam_role-this
 spec:
   owner: platform-team
   type: terraform
@@ -44,7 +44,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
   description: resource aws_iam_role_policy_attachment with name custom
-  name: aws_iam_role_policy_attachment
+  name: aws_iam_role_policy_attachment-custom
 spec:
   owner: platform-team
   type: terraform
