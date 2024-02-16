@@ -77,7 +77,7 @@ def define_resource_component(tfjson, env_path, env):
         catalog_path = env_path.split('/')[1] + '/modules'
         if not os.path.exists(catalog_path):
             os.makedirs(catalog_path)
-        terraform_module(path, catalog_path, env, module_names, [])
+        terraform_module(path, catalog_path, env, module_names[0], None)
         return
     else:
         path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
@@ -128,9 +128,7 @@ def define_resource_component(tfjson, env_path, env):
 
 
 # function that processes the modules and submodules define in the Hashicorp registry
-def terraform_module(path, cat_path, env, module_names, parent=None):
-    if parent is None:
-        parent = []
+def terraform_module(path, cat_path, env, module_name, parent):
     module_list = []
     module_res_list = []
     module_var_list = []
@@ -147,7 +145,7 @@ def terraform_module(path, cat_path, env, module_names, parent=None):
         for submod in submod_list:
             if not os.path.exists(subcat_path):
                 os.makedirs(subcat_path)
-            terraform_module(modules_path+'/'+submod, subcat_path, env, list(submod.split(" ")), module_names[0])
+            terraform_module(modules_path+'/'+submod, subcat_path, env, submod, module_name)
 
     # Once the recursion is finished and the submodule ResourceComponent created,
     # check if module has resource or variable files
@@ -175,29 +173,42 @@ def terraform_module(path, cat_path, env, module_names, parent=None):
                 module_list.append('resource:' + res[0] + '-' + res_names[0])
 
     # create the ResourceComponent def for the Terraform registry module
+    if (parent is not None) and not (isinstance(parent, list)):
+        parent = [parent]
+
     data = dict(
         apiVersion='backstage.io/v1alpha1',
         kind='ResourceComponent',
         metadata=dict(
-            name=module_names[0],
-            description=module_names[0] + ' terraform module'
+            name=module_name,
+            description=module_name + ' terraform module'
         ),
         spec=dict(
-            **({"parent": [parent]}),
+            parent=parent,
             type='terraform',
             lifecycle='experimental',
             owner='platform-team',
-            **({"providesVariables": module_var_list}),
-            **({"dependsOn": module_list}),
+            providesVariables=module_var_list,
+            dependsOn=module_list,
             environment=[env]
         )
     )
+    spec = {}
+    for key, value in data.items():
+        if key == 'spec':
+            spec = {
+                k: v for k, v in value.items()
+                if v is not None
+            }
+
+    data.update(spec=spec)
+
 
     # print(cat_path + '/' + module_names[0] + '-catalog-info.yaml')
-    with open(cat_path + '/' + module_names[0] + '-catalog-info.yaml', 'w') as f:
+    with open(cat_path + '/' + module_name + '-catalog-info.yaml', 'w') as f:
         f.write('---\n')
     f.close()
-    with open(cat_path + '/' + module_names[0] + '-catalog-info.yaml', 'a+') as outfile:
+    with open(cat_path + '/' + module_name + '-catalog-info.yaml', 'a+') as outfile:
         yaml.dump(data, outfile, default_flow_style=False)
 
     # for each file found in the module directory that has a resource defined,
@@ -205,7 +216,7 @@ def terraform_module(path, cat_path, env, module_names, parent=None):
     for file in module_res_file_list:
         resource_json = parsefile(path + '/' + file)
         for resource in resource_json['resource']:
-            define_resource(resource, cat_path, module_names[0])
+            define_resource(resource, cat_path, module_name)
 
 
 # define the Catalog-info.yaml file for the Resource entity
