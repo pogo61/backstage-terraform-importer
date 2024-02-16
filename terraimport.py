@@ -7,6 +7,20 @@ import os
 import fnmatch
 
 
+def was_value_inputted(value):
+    if len(file_name) < 1:
+        return False
+    else:
+        return True
+
+
+def was_yes_no_entered(value):
+    if value == 'yes' or value == 'no':
+        return True
+    else:
+        return False
+
+
 def extract_keys(dictionary):
     return [key for key in dictionary.keys()]
 
@@ -33,7 +47,7 @@ def get_variables(path, file):
 
 
 # define the Catalog-info.yaml file for the Environment entity
-def define_environment(env, path):
+def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
     data = dict(
         apiVersion='backstage.io/v1alpha1',
         kind='Environment',
@@ -42,14 +56,58 @@ def define_environment(env, path):
             description=env + ' environment'
         ),
         spec=dict(
-            owner='platform-team',
-            domain='infrastructure'
+            owner=grp_name,
+            domain=dom_name
         )
     )
 
     with open(path + '/catalog-info.yaml', 'w') as outfile:
         yaml.dump(data, outfile, default_flow_style=False)
     outfile.close()
+
+    if was_yes_no_entered(grp_new):
+        domain = dict(
+            apiVersion='backstage.io/v1alpha1',
+            kind='Group',
+            metadata = dict(
+              name=grp_name,
+              description='The team responsible for environment ' + env_name
+            ),
+            spec=dict(
+              type='business-unit',
+              profile=dict(
+                displayName=grp_name
+              ),
+              parent='other',
+              children=['backstage']
+            )
+        )
+
+        with open(path + '/catalog-info.yaml', 'a+') as f:
+            f.write('---\n')
+        f.close()
+        with open(path + '/catalog-info.yaml', 'a+') as outfile:
+            yaml.dump(domain, outfile, default_flow_style=False)
+
+    if was_yes_no_entered(dom_new):
+        group = dict(
+            apiVersion='backstage.io/v1alpha1',
+            kind='Domain',
+            metadata=dict(
+                name=dom_name,
+                description='Everything about Infrastructure'
+            ),
+            spec=dict(
+              owner='backstage'
+            )
+        )
+
+        with open(path + '/catalog-info.yaml', 'a+') as f:
+            f.write('---\n')
+        f.close()
+        with open(path + '/catalog-info.yaml', 'a+') as outfile:
+            yaml.dump(group, outfile, default_flow_style=False)
+
 
 
 # define the Catalog-info.yaml file for the ResourceComponent entity for the module defined by user
@@ -73,6 +131,7 @@ def define_resource_component(tfjson, env_path, env):
             print('The module should already have a Backstage ResourceComponent definition.')
             print('creating a temporary on in the ' + path + ' directory. Add this to your module repo!')
     elif 'terraform' in path_prefix:
+        # process the Terraform Registry based module(s)
         path = env_path.split('/')[1] + '/' + '.terraform/modules/' + module_names[0]
         catalog_path = env_path.split('/')[1] + '/modules'
         if not os.path.exists(catalog_path):
@@ -80,6 +139,7 @@ def define_resource_component(tfjson, env_path, env):
         terraform_module(path, catalog_path, env, module_names[0], None)
         return
     else:
+        # assuming the module(s) are local
         path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
 
     # check for resource and variables .tf files in the module folder
@@ -107,12 +167,24 @@ def define_resource_component(tfjson, env_path, env):
             type='terraform',
             lifecycle='experimental',
             owner='platform-team',
-            **({"providesVariables": variable_list}),
-            **({"dependsOn": resource_list}),
+            providesVariables=variable_list,
+            dependsO=resource_list,
             environment=[env]
         )
     )
 
+    # remove spec attributes that have no values
+    spec = {}
+    for key, value in data.items():
+        if key == 'spec':
+            spec = {
+                k: v for k, v in value.items()
+                if (v is not None) or (not v)
+            }
+    data.update(spec=spec)
+
+    # prepend catalog template with yaml file separator
+    # then insert the ResourceComponent definition
     with open(path + '/catalog-info.yaml', 'w') as f:
         f.write('---\n')
     f.close()
@@ -140,12 +212,12 @@ def terraform_module(path, cat_path, env, module_name, parent):
     subcat_path = cat_path + '/modules'
 
     # recursively process the submodules of the module
-    if Path(os.getcwd()+'/'+modules_path).is_dir():
-        submod_list = os.listdir(path=Path(os.getcwd()+'/'+modules_path))
+    if Path(os.getcwd() + '/' + modules_path).is_dir():
+        submod_list = os.listdir(path=Path(os.getcwd() + '/' + modules_path))
         for submod in submod_list:
             if not os.path.exists(subcat_path):
                 os.makedirs(subcat_path)
-            terraform_module(modules_path+'/'+submod, subcat_path, env, submod, module_name)
+            terraform_module(modules_path + '/' + submod, subcat_path, env, submod, module_name)
 
     # Once the recursion is finished and the submodule ResourceComponent created,
     # check if module has resource or variable files
@@ -172,10 +244,11 @@ def terraform_module(path, cat_path, env, module_name, parent):
                 res_names = extract_keys(resource[res[0]])
                 module_list.append('resource:' + res[0] + '-' + res_names[0])
 
-    # create the ResourceComponent def for the Terraform registry module
+    # create a list if parent is a single value
     if (parent is not None) and not (isinstance(parent, list)):
         parent = [parent]
 
+    # create the ResourceComponent def for the Terraform registry module
     data = dict(
         apiVersion='backstage.io/v1alpha1',
         kind='ResourceComponent',
@@ -193,6 +266,8 @@ def terraform_module(path, cat_path, env, module_name, parent):
             environment=[env]
         )
     )
+
+    # remove spec attributes that have no values
     spec = {}
     for key, value in data.items():
         if key == 'spec':
@@ -200,11 +275,10 @@ def terraform_module(path, cat_path, env, module_name, parent):
                 k: v for k, v in value.items()
                 if v is not None
             }
-
     data.update(spec=spec)
 
-
-    # print(cat_path + '/' + module_names[0] + '-catalog-info.yaml')
+    # prepend catalog template with yaml file separator
+    # then insert the ResourceComponent definition
     with open(cat_path + '/' + module_name + '-catalog-info.yaml', 'w') as f:
         f.write('---\n')
     f.close()
@@ -259,7 +333,7 @@ def create_catalog_defs(tf_name, env):
     file_json = parsefile(tf_name)
 
     # define the catalog-info.yaml for the Environment entity
-    define_environment(env, env_dir)
+    define_environment(env, env_dir, domain_name, domain_new, group_name, group_new)
 
     # if the base Terraform has resources define in the base, define the catalog-info.yaml for the Resource entity/ies
     if file_json.get('resource'):
@@ -283,11 +357,33 @@ def create_catalog_defs(tf_name, env):
 if __name__ == "__main__":
     print(' **NOTE** if the terraform uses repo-based modules, YOU MUST have run a "terraform get" before this utility')
     file_name = input('The path of the base "Environment" Terraform File to be parsed: ').lower()
-    env_name = input('The name of the "Environment to be defined in Backstage": ').lower()
-
-    if len(file_name) < 1:
+    if not was_value_inputted(file_name):
         print("Please give a terraform file to parse.")
-    elif len(env_name) < 1:
+        exit(1)
+    env_name = input('The name of the "Environment" to be defined in Backstage: ').lower()
+    if not was_value_inputted(env_name):
         print("Please give a name for the Environment.")
-    else:
-        create_catalog_defs(file_name, env_name)
+        exit(1)
+    domain_name = input('The name of the "Domain" for the Environment: ').lower()
+    if not was_value_inputted(domain_name):
+        print("Please give a name for the Domain.")
+        exit(1)
+    domain_new = input('Is the Domain New? ').lower()
+    if not was_value_inputted(domain_new):
+        print("Please indicate if the Domain is new or not.")
+        exit(1)
+    elif not was_yes_no_entered(domain_new):
+        print("Please answer 'yes or 'no' only")
+        exit(1)
+    group_name = input('The name of the "Group" for the Environment: ').lower()
+    if not was_value_inputted(group_name):
+        print("Please give a name for the Domain.")
+    group_new = input('Is the Group New? ').lower()
+    if not was_value_inputted(group_new):
+        print("Please indicate if the Group is new or not.")
+        exit(1)
+    elif not was_yes_no_entered(group_new):
+        print("Please answer 'yes or 'no' only")
+        exit(1)
+
+    create_catalog_defs(file_name, env_name)
