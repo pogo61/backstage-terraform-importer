@@ -27,7 +27,7 @@ Or where the module is defined in a remote repo or Terraform Registry, the 'terr
    3. the name of the Backstage domain that the Environment belongs to
    4. if this Domain is new for this Environment (it will create a Domain entity with the Environment if new)
    5. the name of the Backstage Group that owns the Environment 
-   6. if this Group is new for this Environment (it will create a Domain entity with the Environment if new)
+   6. if this Group is new for this Environment (it will create a Group entity with the Environment if new)
 
 ```
  **NOTE** if the terraform uses repo-based modules, YOU MUST have run a "terraform get" before this utility
