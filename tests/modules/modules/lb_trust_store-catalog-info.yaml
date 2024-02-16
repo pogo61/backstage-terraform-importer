@@ -5,7 +5,8 @@ metadata:
   description: lb_trust_store terraform module
   name: lb_trust_store
 spec:
-  parent: 'alb'
+  parent:
+  - 'alb'
   dependsOn:
   - resource:aws_lb_trust_store-this
   - resource:aws_lb_trust_store_revocation-this
