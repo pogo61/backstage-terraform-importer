@@ -24,6 +24,6 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   providesVariables: []
   type: terraform

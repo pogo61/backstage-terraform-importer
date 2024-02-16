@@ -15,7 +15,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - iam
   providesVariables:
@@ -43,7 +43,7 @@ metadata:
   description: resource aws_iam_user with name this
   name: aws_iam_user-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -52,7 +52,7 @@ metadata:
   description: resource aws_iam_user_login_profile with name this
   name: aws_iam_user_login_profile-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -61,7 +61,7 @@ metadata:
   description: resource aws_iam_access_key with name this
   name: aws_iam_access_key-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -70,7 +70,7 @@ metadata:
   description: resource aws_iam_access_key with name this_no_pgp
   name: aws_iam_access_key-this_no_pgp
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -79,7 +79,7 @@ metadata:
   description: resource aws_iam_user_ssh_key with name this
   name: aws_iam_user_ssh_key-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -88,5 +88,5 @@ metadata:
   description: resource aws_iam_user_policy_attachment with name this
   name: aws_iam_user_policy_attachment-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

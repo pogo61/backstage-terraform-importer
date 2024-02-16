@@ -15,7 +15,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - iam
   providesVariables:
@@ -55,7 +55,7 @@ metadata:
   description: resource aws_iam_role with name admin
   name: aws_iam_role-admin
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -64,7 +64,7 @@ metadata:
   description: resource aws_iam_role_policy_attachment with name admin
   name: aws_iam_role_policy_attachment-admin
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -73,7 +73,7 @@ metadata:
   description: resource aws_iam_role with name poweruser
   name: aws_iam_role-poweruser
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -82,7 +82,7 @@ metadata:
   description: resource aws_iam_role_policy_attachment with name poweruser
   name: aws_iam_role_policy_attachment-poweruser
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -91,7 +91,7 @@ metadata:
   description: resource aws_iam_role with name readonly
   name: aws_iam_role-readonly
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -100,5 +100,5 @@ metadata:
   description: resource aws_iam_role_policy_attachment with name readonly
   name: aws_iam_role_policy_attachment-readonly
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

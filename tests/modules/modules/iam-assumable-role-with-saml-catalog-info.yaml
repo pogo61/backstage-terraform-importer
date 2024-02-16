@@ -11,7 +11,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - iam
   providesVariables:
@@ -39,7 +39,7 @@ metadata:
   description: resource aws_iam_role with name this
   name: aws_iam_role-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -48,5 +48,5 @@ metadata:
   description: resource aws_iam_role_policy_attachment with name custom
   name: aws_iam_role_policy_attachment-custom
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

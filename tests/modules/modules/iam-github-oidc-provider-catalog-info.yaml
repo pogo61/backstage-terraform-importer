@@ -10,7 +10,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - iam
   providesVariables:
@@ -27,5 +27,5 @@ metadata:
   description: resource aws_iam_openid_connect_provider with name this
   name: aws_iam_openid_connect_provider-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

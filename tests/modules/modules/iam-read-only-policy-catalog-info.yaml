@@ -10,7 +10,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - iam
   providesVariables:
@@ -34,5 +34,5 @@ metadata:
   description: resource aws_iam_policy with name policy
   name: aws_iam_policy-policy
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

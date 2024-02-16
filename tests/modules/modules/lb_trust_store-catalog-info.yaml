@@ -11,7 +11,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - alb
   providesVariables:
@@ -32,7 +32,7 @@ metadata:
   description: resource aws_lb_trust_store with name this
   name: aws_lb_trust_store-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -41,5 +41,5 @@ metadata:
   description: resource aws_lb_trust_store_revocation with name this
   name: aws_lb_trust_store_revocation-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

@@ -13,7 +13,7 @@ spec:
   environment:
   - dev
   lifecycle: experimental
-  owner: platform-team
+  owner: platform_team
   parent:
   - iam
   providesVariables:
@@ -30,7 +30,7 @@ metadata:
   description: resource aws_iam_policy with name this
   name: aws_iam_policy-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -39,7 +39,7 @@ metadata:
   description: resource aws_iam_group with name this
   name: aws_iam_group-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -48,7 +48,7 @@ metadata:
   description: resource aws_iam_group_policy_attachment with name this
   name: aws_iam_group_policy_attachment-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
@@ -57,5 +57,5 @@ metadata:
   description: resource aws_iam_group_membership with name this
   name: aws_iam_group_membership-this
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform

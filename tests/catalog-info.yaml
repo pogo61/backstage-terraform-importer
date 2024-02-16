@@ -4,7 +4,7 @@ metadata:
   description: dev environment
   name: dev
 spec:
-  domain: infrastructure
+  domain: infrastructre
   owner: platform_team
 ---
 apiVersion: backstage.io/v1alpha1
@@ -24,7 +24,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Domain
 metadata:
   description: Everything about Infrastructure
-  name: infrastructure
+  name: infrastructre
 spec:
   owner: backstage
 ---
@@ -34,5 +34,5 @@ metadata:
   description: resource aws_ssm_parameter with name validated_image
   name: aws_ssm_parameter-validated_image
 spec:
-  owner: platform-team
+  owner: platform_team
   type: terraform
