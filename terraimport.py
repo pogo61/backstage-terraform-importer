@@ -183,7 +183,7 @@ def terraform_module(path, cat_path, env, module_names, parent=None):
             description=module_names[0] + ' terraform module'
         ),
         spec=dict(
-            **({"parent": parent}),
+            **({"parent": [parent]}),
             type='terraform',
             lifecycle='experimental',
             owner='platform-team',

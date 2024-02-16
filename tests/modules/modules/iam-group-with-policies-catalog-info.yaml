@@ -17,7 +17,8 @@ spec:
   - dev
   lifecycle: experimental
   owner: platform-team
-  parent: iam
+  parent:
+  - iam
   providesVariables:
   - create_group
   - name

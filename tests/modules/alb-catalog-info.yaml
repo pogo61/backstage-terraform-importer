@@ -24,7 +24,8 @@ spec:
   - dev
   lifecycle: experimental
   owner: platform-team
-  parent: []
+  parent:
+  - []
   providesVariables:
   - create
   - tags

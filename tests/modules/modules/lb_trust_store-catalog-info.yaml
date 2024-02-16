@@ -12,7 +12,8 @@ spec:
   - dev
   lifecycle: experimental
   owner: platform-team
-  parent: alb
+  parent:
+  - alb
   providesVariables:
   - create
   - ca_certificates_bundle_s3_bucket
