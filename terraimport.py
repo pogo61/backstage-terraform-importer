@@ -77,7 +77,7 @@ def define_resource_component(tfjson, env_path, env):
         catalog_path = env_path.split('/')[1] + '/modules'
         if not os.path.exists(catalog_path):
             os.makedirs(catalog_path)
-        terraform_module(path, catalog_path, env, module_names)
+        terraform_module(path, catalog_path, env, module_names, [])
         return
     else:
         path = env_path.rsplit('/', 1)[0] + '/' + rel_path.split('/', 1)[1]
@@ -128,7 +128,9 @@ def define_resource_component(tfjson, env_path, env):
 
 
 # function that processes the modules and submodules define in the Hashicorp registry
-def terraform_module(path, cat_path, env, module_names):
+def terraform_module(path, cat_path, env, module_names, parent=None):
+    if parent is None:
+        parent = []
     module_list = []
     module_res_list = []
     module_var_list = []
@@ -145,7 +147,7 @@ def terraform_module(path, cat_path, env, module_names):
         for submod in submod_list:
             if not os.path.exists(subcat_path):
                 os.makedirs(subcat_path)
-            terraform_module(modules_path+'/'+submod, subcat_path, env, list(submod.split(" ")))
+            terraform_module(modules_path+'/'+submod, subcat_path, env, list(submod.split(" ")), module_names[0])
 
     # Once the recursion is finished and the submodule ResourceComponent created,
     # check if module has resource or variable files
@@ -181,6 +183,7 @@ def terraform_module(path, cat_path, env, module_names):
             description=module_names[0] + ' terraform module'
         ),
         spec=dict(
+            **({"parent": parent}),
             type='terraform',
             lifecycle='experimental',
             owner='platform-team',
