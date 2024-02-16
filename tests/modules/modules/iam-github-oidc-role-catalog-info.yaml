@@ -5,6 +5,7 @@ metadata:
   description: iam-github-oidc-role terraform module
   name: iam-github-oidc-role
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_role-this
   - resource:aws_iam_role_policy_attachment-this

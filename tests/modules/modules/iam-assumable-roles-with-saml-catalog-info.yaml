@@ -5,6 +5,7 @@ metadata:
   description: iam-assumable-roles-with-saml terraform module
   name: iam-assumable-roles-with-saml
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_role-admin
   - resource:aws_iam_role_policy_attachment-admin

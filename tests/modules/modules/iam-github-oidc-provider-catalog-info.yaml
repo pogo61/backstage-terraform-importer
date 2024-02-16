@@ -5,6 +5,7 @@ metadata:
   description: iam-github-oidc-provider terraform module
   name: iam-github-oidc-provider
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_openid_connect_provider-this
   environment:

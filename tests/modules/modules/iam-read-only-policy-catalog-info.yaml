@@ -5,6 +5,7 @@ metadata:
   description: iam-read-only-policy terraform module
   name: iam-read-only-policy
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_policy-policy
   environment:

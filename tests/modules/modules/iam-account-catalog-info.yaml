@@ -5,6 +5,7 @@ metadata:
   description: iam-account terraform module
   name: iam-account
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_account_alias-this
   - resource:aws_iam_account_password_policy-this

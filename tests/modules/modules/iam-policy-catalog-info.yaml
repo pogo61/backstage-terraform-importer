@@ -5,6 +5,7 @@ metadata:
   description: iam-policy terraform module
   name: iam-policy
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_policy-policy
   environment:

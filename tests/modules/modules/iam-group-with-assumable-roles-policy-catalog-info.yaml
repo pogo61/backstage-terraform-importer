@@ -5,6 +5,7 @@ metadata:
   description: iam-group-with-assumable-roles-policy terraform module
   name: iam-group-with-assumable-roles-policy
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_policy-this
   - resource:aws_iam_group-this

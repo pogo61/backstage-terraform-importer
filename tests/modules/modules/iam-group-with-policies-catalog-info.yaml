@@ -5,6 +5,7 @@ metadata:
   description: iam-group-with-policies terraform module
   name: iam-group-with-policies
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_group-this
   - resource:aws_iam_group_membership-this

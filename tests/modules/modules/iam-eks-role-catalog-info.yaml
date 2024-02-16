@@ -5,6 +5,7 @@ metadata:
   description: iam-eks-role terraform module
   name: iam-eks-role
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_role-this
   - resource:aws_iam_role_policy_attachment-this

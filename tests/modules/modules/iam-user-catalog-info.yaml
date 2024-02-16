@@ -5,6 +5,7 @@ metadata:
   description: iam-user terraform module
   name: iam-user
 spec:
+  parent: iam
   dependsOn:
   - resource:aws_iam_user-this
   - resource:aws_iam_user_login_profile-this
