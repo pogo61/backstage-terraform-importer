@@ -65,8 +65,8 @@ def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
         yaml.dump(data, outfile, default_flow_style=False)
     outfile.close()
 
-    if was_yes_no_entered(grp_new):
-        domain = dict(
+    if grp_new == 'yes':
+        group = dict(
             apiVersion='backstage.io/v1alpha1',
             kind='Group',
             metadata=dict(
@@ -87,10 +87,10 @@ def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
             f.write('---\n')
         f.close()
         with open(path + '/catalog-info.yaml', 'a+') as outfile:
-            yaml.dump(domain, outfile, default_flow_style=False)
+            yaml.dump(group, outfile, default_flow_style=False)
 
-    if was_yes_no_entered(dom_new):
-        group = dict(
+    if dom_new == 'yes':
+        domain = dict(
             apiVersion='backstage.io/v1alpha1',
             kind='Domain',
             metadata=dict(
@@ -106,7 +106,7 @@ def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
             f.write('---\n')
         f.close()
         with open(path + '/catalog-info.yaml', 'a+') as outfile:
-            yaml.dump(group, outfile, default_flow_style=False)
+            yaml.dump(domain, outfile, default_flow_style=False)
 
 
 # define the Catalog-info.yaml file for the ResourceComponent entity for the module defined by user
