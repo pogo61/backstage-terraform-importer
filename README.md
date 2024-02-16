@@ -21,16 +21,23 @@ Or where the module is defined in a remote repo or Terraform Registry, the 'terr
 ## Using the utility
 1. clone this repo to your local dev machine 
 2. simply type `python3 terraimport.py` in the root directory of the cloned repo
-3. you'll be prompted for two values
+3. you'll be prompted for a number of values
    1. the full path to the terraform file that forms the base of your IaC for an environment
    2. the name you call that environment
+   3. the name of the Backstage domain that the Environment belongs to
+   4. if this Domain is new for this Environment (it will create a Domain entity with the Environment if new)
+   5. the name of the Backstage Group that owns the Environment 
+   6. if this Group is new for this Environment (it will create a Domain entity with the Environment if new)
 
 ```
  **NOTE** if the terraform uses repo-based modules, YOU MUST have run a "terraform get" before this utility
-The name of the base "Environment" Terraform File to be parsed: /Users/paulpog/IdeaProjects/ecs-cluster-terraform/deployment/dev/main.tf
-The name of the "Environment to be defined in Backstage": dev
-
-Process finished with exit code 0
+The path of the base "Environment" Terraform File to be parsed: ./tests/main.tf
+The name of the "Environment" to be defined in Backstage: dev
+The name of the "Domain" for the Environment: infrastructre
+Is the Domain New? no
+The name of the "Group" for the Environment: platform_team
+Is the Group New? no
+The module already has a Backstage ResourceComponent definition - use this
 ```
                                                              
  The utility will then do the following:
