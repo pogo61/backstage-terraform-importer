@@ -4,7 +4,7 @@ metadata:
   description: dev environment
   name: dev
 spec:
-  domain: infrastructre
+  domain: infrastructure
   owner: platform_team
 ---
 apiVersion: backstage.io/v1alpha1
@@ -24,7 +24,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Domain
 metadata:
   description: Everything about Infrastructure
-  name: infrastructre
+  name: infrastructure
 spec:
   owner: backstage
 ---
