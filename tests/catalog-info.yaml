@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Environment
 metadata:
   description: dev environment
-  name: dev
+  name: test
 spec:
   domain: infrastructure
   owner: platform_team
