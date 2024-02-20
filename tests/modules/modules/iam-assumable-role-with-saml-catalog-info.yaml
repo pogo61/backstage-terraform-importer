@@ -9,7 +9,8 @@ spec:
   - resource:aws_iam_role-this
   - resource:aws_iam_role_policy_attachment-custom
   environment:
-  - dev, test, prod
+  - test
+  - dev
   lifecycle: experimental
   owner: platform_team
   parent:

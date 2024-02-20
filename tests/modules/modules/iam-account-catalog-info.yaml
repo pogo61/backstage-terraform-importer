@@ -9,7 +9,8 @@ spec:
   - resource:aws_iam_account_alias-this
   - resource:aws_iam_account_password_policy-this
   environment:
-  - dev, test, prod
+  - test
+  - dev
   lifecycle: experimental
   owner: platform_team
   parent:

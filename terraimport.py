@@ -8,10 +8,17 @@ import fnmatch
 
 
 def was_value_inputted(value):
-    if len(value) < 1:
-        return False
-    else:
-        return True
+    try:
+        if len(value) < 1:
+            return False
+        else:
+            return True
+    except TypeError:
+        if type(value) == bool:
+            return True
+        else:
+            return False
+
 
 
 def was_yes_no_entered(value):
@@ -65,13 +72,13 @@ def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
         yaml.dump(data, outfile, default_flow_style=False)
     outfile.close()
 
-    if grp_new == 'yes':
+    if grp_new:
         group = dict(
             apiVersion='backstage.io/v1alpha1',
             kind='Group',
             metadata=dict(
                 name=grp_name,
-                description='The team responsible for environment ' + env_name
+                description='The team responsible for environment ' + env
             ),
             spec=dict(
                 type='business-unit',
@@ -89,7 +96,7 @@ def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
         with open(path + '/catalog-info.yaml', 'a+') as outfile:
             yaml.dump(group, outfile, default_flow_style=False)
 
-    if dom_new == 'yes':
+    if dom_new:
         domain = dict(
             apiVersion='backstage.io/v1alpha1',
             kind='Domain',
@@ -110,7 +117,9 @@ def define_environment(env, path, dom_name, dom_new, grp_name, grp_new):
 
 
 # define the Catalog-info.yaml file for the ResourceComponent entity for the module defined by user
-def define_resource_component(tfjson, env_path, env):
+def define_resource_component(tfjson, env_path, env, group_name, ex_envs=None):
+    if ex_envs is None:
+        ex_envs = []
     module_names = extract_keys(tfjson)
     module_path_keys = extract_keys(tfjson[module_names[0]])
     rel_path = tfjson[module_names[0]][module_path_keys[0]]
@@ -118,6 +127,7 @@ def define_resource_component(tfjson, env_path, env):
     resource_list = []
     variable_list = []
     resource_file_list = []
+    envs = []
 
     # if the module is in a repo then it should be in the local '.terraform/' subdirectory  from a
     # 'terraform get' or 'terraform init'
@@ -135,7 +145,7 @@ def define_resource_component(tfjson, env_path, env):
         catalog_path = env_path.split('/')[1] + '/modules'
         if not os.path.exists(catalog_path):
             os.makedirs(catalog_path)
-        terraform_module(path, catalog_path, env, module_names[0], None)
+        terraform_module(path, catalog_path, env, module_names[0], None, ex_envs, group_name)
         return
     else:
         # assuming the module(s) are local
@@ -154,6 +164,14 @@ def define_resource_component(tfjson, env_path, env):
         print("This version of the utility doesn't support remote, or url based, modules")
         return
 
+    if len(ex_envs) > 0:
+        if env not in ex_envs:
+            envs = [env] + ex_envs
+        else:
+            envs = ex_envs
+    else:
+        envs = [env]
+
     # create the ResourceComponent def for the module
     data = dict(
         apiVersion='backstage.io/v1alpha1',
@@ -168,7 +186,7 @@ def define_resource_component(tfjson, env_path, env):
             owner=group_name,
             providesVariables=variable_list,
             dependsO=resource_list,
-            environment=[env]
+            environment=envs
         )
     )
 
@@ -195,16 +213,17 @@ def define_resource_component(tfjson, env_path, env):
     for file in resource_file_list:
         resource_json = parsefile(path + '/' + file)
         for resource in resource_json['resource']:
-            define_resource(resource, path)
+            define_resource(resource, path, group_name)
 
 
 # function that processes the modules and submodules define in the Hashicorp registry
-def terraform_module(path, cat_path, env, module_name, parent):
+def terraform_module(path, cat_path, env, module_name, parent, ex_envs:list, group_name):
     module_list = []
     module_res_list = []
     module_var_list = []
     module_res_file_list = []
     submod_list = []
+    envs = []
 
     # check to see if there aren't submodules and process if there are
     modules_path = path + '/modules'
@@ -216,7 +235,7 @@ def terraform_module(path, cat_path, env, module_name, parent):
         for submod in submod_list:
             if not os.path.exists(subcat_path):
                 os.makedirs(subcat_path)
-            terraform_module(modules_path + '/' + submod, subcat_path, env, submod, module_name)
+            terraform_module(modules_path + '/' + submod, subcat_path, env, submod, module_name, ex_envs, group_name)
 
     # Once the recursion is finished and the submodule ResourceComponent created,
     # check if module has resource or variable files
@@ -247,6 +266,14 @@ def terraform_module(path, cat_path, env, module_name, parent):
     if (parent is not None) and not (isinstance(parent, list)):
         parent = [parent]
 
+    if len(ex_envs) > 0:
+        if env not in ex_envs:
+            envs = [env] + ex_envs
+        else:
+            envs = ex_envs
+    else:
+        envs = [env]
+
     # create the ResourceComponent def for the Terraform registry module
     data = dict(
         apiVersion='backstage.io/v1alpha1',
@@ -262,7 +289,7 @@ def terraform_module(path, cat_path, env, module_name, parent):
             owner=group_name,
             providesVariables=module_var_list,
             dependsOn=module_list,
-            environment=[env]
+            environment=envs
         )
     )
 
@@ -289,11 +316,11 @@ def terraform_module(path, cat_path, env, module_name, parent):
     for file in module_res_file_list:
         resource_json = parsefile(path + '/' + file)
         for resource in resource_json['resource']:
-            define_resource(resource, cat_path, module_name)
+            define_resource(resource, cat_path, group_name, module_name)
 
 
 # define the Catalog-info.yaml file for the Resource entity
-def define_resource(tfjson, path, mod_name='none'):
+def define_resource(tfjson, path, group_name, mod_name='none'):
     if mod_name != 'none':
         with open(path + '/' + mod_name + '-catalog-info.yaml', 'a+') as f:
             f.write('---\n')
@@ -327,7 +354,14 @@ def define_resource(tfjson, path, mod_name='none'):
 
 
 # determine what's in Terraform pointed to by the user, and process accordingly
-def create_catalog_defs(tf_name, env):
+def create_catalog_defs(conf_dict):
+    tf_name = conf_dict.get('env_path')
+    env = conf_dict.get('environment')
+    exist_envs  = conf_dict.get('existing_envs')
+    domain_name = conf_dict.get('domain').get('name')
+    domain_new = conf_dict.get('domain').get('new')
+    group_name = conf_dict.get('group').get('name')
+    group_new =  conf_dict.get('group').get('new')
     env_dir = tf_name.rsplit('/', 1)[0]
     file_json = parsefile(tf_name)
 
@@ -337,7 +371,7 @@ def create_catalog_defs(tf_name, env):
     # if the base Terraform has resources define in the base, define the catalog-info.yaml for the Resource entity/ies
     if file_json.get('resource'):
         for resource in file_json['resource']:
-            define_resource(resource, env_dir)
+            define_resource(resource, env_dir, group_name)
 
     # check to see if there are resource files in the base directory and create Resource def in the
     # catalog-info.yaml file for the Environment entity id there is
@@ -345,16 +379,15 @@ def create_catalog_defs(tf_name, env):
         if file.endswith(".tf") and ['main.tf', 'variables.tf', 'data_sources.tf', 'local.tf'].count(file) == 0:
             resource_file = parsefile(env_dir + '/' + file)
             for resource in resource_file['resource']:
-                define_resource(resource, env_dir)
+                define_resource(resource, env_dir, group_name)
 
     # if the base Terraform has uses modules, define the catalog-info.yaml for the ResourceComponents entity/ies
     if file_json.get('module'):
         for module in file_json['module']:
-            define_resource_component(module, env_dir, env)
+            define_resource_component(module, env_dir, env, group_name, exist_envs)
 
 
 def check_config(conf: dict):
-    print(conf)
 
     if not was_value_inputted(conf.get('env_path')):
         print("Please give a terraform file to parse.")
@@ -380,6 +413,8 @@ def check_config(conf: dict):
         print("Please indicate if the Group is new or not.")
         return False
 
+    return True
+
 
 if __name__ == "__main__":
     print(' **NOTE** if the terraform uses repo-based modules, YOU MUST have run a "terraform get" before this utility')
@@ -393,34 +428,6 @@ if __name__ == "__main__":
         config = yaml.safe_load(stream)
 
     if check_config(config):
-        create_catalog_defs(conf.env_path, env_name)
-
-    # file_name = input('The path of the base "Environment" Terraform File to be parsed: ').lower()
-    # if not was_value_inputted(file_name):
-    #     print("Please give a terraform file to parse.")
-    #     exit(1)
-    # env_name = input('The name of the "Environment" to be defined in Backstage: ').lower()
-    # if not was_value_inputted(env_name):
-    #     print("Please give a name for the Environment.")
-    #     exit(1)
-    # domain_name = input('The name of the "Domain" for the Environment: ').lower()
-    # if not was_value_inputted(domain_name):
-    #     print("Please give a name for the Domain.")
-    #     exit(1)
-    # domain_new = input('Is the Domain New? ').lower()
-    # if not was_value_inputted(domain_new):
-    #     print("Please indicate if the Domain is new or not.")
-    #     exit(1)
-    # elif not was_yes_no_entered(domain_new):
-    #     print("Please answer 'yes or 'no' only")
-    #     exit(1)
-    # group_name = input('The name of the "Group" for the Environment: ').lower()
-    # if not was_value_inputted(group_name):
-    #     print("Please give a name for the Domain.")
-    # group_new = input('Is the Group New? ').lower()
-    # if not was_value_inputted(group_new):
-    #     print("Please indicate if the Group is new or not.")
-    #     exit(1)
-    # elif not was_yes_no_entered(group_new):
-    #     print("Please answer 'yes or 'no' only")
-    #     exit(1)
+        create_catalog_defs(config)
+    else:
+        exit(1)

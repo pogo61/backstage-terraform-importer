@@ -14,7 +14,8 @@ spec:
   - resource:aws_iam_policy-iam_self_management
   - resource:aws_iam_policy-custom
   environment:
-  - dev, test, prod
+  - test
+  - dev
   lifecycle: experimental
   owner: platform_team
   parent:

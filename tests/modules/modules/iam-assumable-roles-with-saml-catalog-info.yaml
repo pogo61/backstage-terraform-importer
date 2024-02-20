@@ -13,7 +13,8 @@ spec:
   - resource:aws_iam_role-readonly
   - resource:aws_iam_role_policy_attachment-readonly
   environment:
-  - dev, test, prod
+  - test
+  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
