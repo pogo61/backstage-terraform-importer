@@ -47,6 +47,7 @@ group:
   name: platform_team
   new: true
 ```
+
 ---
 
 **NOTE**
