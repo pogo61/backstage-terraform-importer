@@ -53,7 +53,9 @@ The existing_envs list is optional.
 it **should**  be used when you are adding a additional Environment. 
 For Example if you have already defined a Dev environment, and are now adding a test, or Prod, environment.
 If you don't do this, the links to the existing environment(s) will be dropped by Backstage
+
 ---
+
  The utility will then do the following:
 1. Parse the config file to get the values for the other config parameters
 2. Parse that base terraform file (env_path parm) and determine whether it uses and modules and/or resources 
