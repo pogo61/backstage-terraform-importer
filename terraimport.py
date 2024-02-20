@@ -8,7 +8,7 @@ import fnmatch
 
 
 def was_value_inputted(value):
-    if len(file_name) < 1:
+    if len(value) < 1:
         return False
     else:
         return True
@@ -353,36 +353,74 @@ def create_catalog_defs(tf_name, env):
             define_resource_component(module, env_dir, env)
 
 
+def check_config(conf: dict):
+    print(conf)
+
+    if not was_value_inputted(conf.get('env_path')):
+        print("Please give a terraform file to parse.")
+        return False
+
+    if not was_value_inputted(conf.get('environment')):
+        print("Please give a terraform file to parse.")
+        return False
+
+    if not was_value_inputted(conf.get('domain').get('name')):
+        print("Please give a name for the Domain.")
+        return False
+
+    if not was_value_inputted(conf.get('domain').get('new')):
+        print("Please indicate if the Domain is new or not.")
+        return False
+
+    if not was_value_inputted(conf.get('group').get('name')):
+        print("Please give a name for the Group.")
+        return False
+
+    if not was_value_inputted(conf.get('group').get('new')):
+        print("Please indicate if the Group is new or not.")
+        return False
+
+
 if __name__ == "__main__":
     print(' **NOTE** if the terraform uses repo-based modules, YOU MUST have run a "terraform get" before this utility')
-    file_name = input('The path of the base "Environment" Terraform File to be parsed: ').lower()
-    if not was_value_inputted(file_name):
-        print("Please give a terraform file to parse.")
-        exit(1)
-    env_name = input('The name of the "Environment" to be defined in Backstage: ').lower()
-    if not was_value_inputted(env_name):
-        print("Please give a name for the Environment.")
-        exit(1)
-    domain_name = input('The name of the "Domain" for the Environment: ').lower()
-    if not was_value_inputted(domain_name):
-        print("Please give a name for the Domain.")
-        exit(1)
-    domain_new = input('Is the Domain New? ').lower()
-    if not was_value_inputted(domain_new):
-        print("Please indicate if the Domain is new or not.")
-        exit(1)
-    elif not was_yes_no_entered(domain_new):
-        print("Please answer 'yes or 'no' only")
-        exit(1)
-    group_name = input('The name of the "Group" for the Environment: ').lower()
-    if not was_value_inputted(group_name):
-        print("Please give a name for the Domain.")
-    group_new = input('Is the Group New? ').lower()
-    if not was_value_inputted(group_new):
-        print("Please indicate if the Group is new or not.")
-        exit(1)
-    elif not was_yes_no_entered(group_new):
-        print("Please answer 'yes or 'no' only")
+    config_path = input('The path and name of the config file: ').lower()
+    if not was_value_inputted(config_path):
+        print("tell me where the config file is.")
         exit(1)
 
-    create_catalog_defs(file_name, env_name)
+    # Read YAML config file
+    with open(config_path, 'r') as stream:
+        config = yaml.safe_load(stream)
+
+    if check_config(config):
+        create_catalog_defs(conf.env_path, env_name)
+
+    # file_name = input('The path of the base "Environment" Terraform File to be parsed: ').lower()
+    # if not was_value_inputted(file_name):
+    #     print("Please give a terraform file to parse.")
+    #     exit(1)
+    # env_name = input('The name of the "Environment" to be defined in Backstage: ').lower()
+    # if not was_value_inputted(env_name):
+    #     print("Please give a name for the Environment.")
+    #     exit(1)
+    # domain_name = input('The name of the "Domain" for the Environment: ').lower()
+    # if not was_value_inputted(domain_name):
+    #     print("Please give a name for the Domain.")
+    #     exit(1)
+    # domain_new = input('Is the Domain New? ').lower()
+    # if not was_value_inputted(domain_new):
+    #     print("Please indicate if the Domain is new or not.")
+    #     exit(1)
+    # elif not was_yes_no_entered(domain_new):
+    #     print("Please answer 'yes or 'no' only")
+    #     exit(1)
+    # group_name = input('The name of the "Group" for the Environment: ').lower()
+    # if not was_value_inputted(group_name):
+    #     print("Please give a name for the Domain.")
+    # group_new = input('Is the Group New? ').lower()
+    # if not was_value_inputted(group_new):
+    #     print("Please indicate if the Group is new or not.")
+    #     exit(1)
+    # elif not was_yes_no_entered(group_new):
+    #     print("Please answer 'yes or 'no' only")
+    #     exit(1)

@@ -1,32 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Environment
 metadata:
-  description: dev environment
-  name: test
+  description: dev, test, prod environment
+  name: dev, test, prod
 spec:
   domain: infrastructure
   owner: platform_team
----
-apiVersion: backstage.io/v1alpha1
-kind: Group
-metadata:
-  description: The team responsible for environment dev
-  name: platform_team
-spec:
-  children:
-  - backstage
-  parent: other
-  profile:
-    displayName: platform_team
-  type: business-unit
----
-apiVersion: backstage.io/v1alpha1
-kind: Domain
-metadata:
-  description: Everything about Infrastructure
-  name: infrastructure
-spec:
-  owner: backstage
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource

@@ -21,8 +21,7 @@ spec:
   - resource:aws_route53_record-this
   - resource:aws_wafv2_web_acl_association-this
   environment:
-    - dev
-    - test
+  - dev, test, prod
   lifecycle: experimental
   owner: platform_team
   providesVariables:

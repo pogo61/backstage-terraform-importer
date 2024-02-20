@@ -22,7 +22,7 @@ spec:
   - resourcecomponent:iam-account
   - resourcecomponent:iam-user
   environment:
-  - dev
+  - dev, test, prod
   lifecycle: experimental
   owner: platform_team
   providesVariables: []

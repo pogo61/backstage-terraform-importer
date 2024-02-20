@@ -13,7 +13,7 @@ spec:
   - resource:aws_iam_user_ssh_key-this
   - resource:aws_iam_user_policy_attachment-this
   environment:
-  - dev
+  - dev, test, prod
   lifecycle: experimental
   owner: platform_team
   parent:

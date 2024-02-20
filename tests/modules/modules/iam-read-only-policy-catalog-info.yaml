@@ -8,7 +8,7 @@ spec:
   dependsOn:
   - resource:aws_iam_policy-policy
   environment:
-  - dev
+  - dev, test, prod
   lifecycle: experimental
   owner: platform_team
   parent:
