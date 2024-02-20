@@ -8,6 +8,7 @@ spec:
   dependsOn:
   - resource:aws_iam_openid_connect_provider-this
   environment:
+  - test
   - dev
   lifecycle: experimental
   owner: platform_team

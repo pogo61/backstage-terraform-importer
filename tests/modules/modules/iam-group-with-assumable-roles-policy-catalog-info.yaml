@@ -11,6 +11,7 @@ spec:
   - resource:aws_iam_group_policy_attachment-this
   - resource:aws_iam_group_membership-this
   environment:
+  - test
   - dev
   lifecycle: experimental
   owner: platform_team

@@ -13,6 +13,7 @@ spec:
   - resource:aws_iam_role_policy_attachment-readonly
   - resource:aws_iam_instance_profile-this
   environment:
+  - test
   - dev
   lifecycle: experimental
   owner: platform_team
