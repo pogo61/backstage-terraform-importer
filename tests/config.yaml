@@ -4,7 +4,7 @@ existing_envs:
   - dev
 domain:
   name: infrastructure
-  new: false
+  new: true
 group:
   name: platform_team
-  new: false
+  new: true
