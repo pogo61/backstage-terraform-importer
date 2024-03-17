@@ -24,7 +24,7 @@ spec:
   - create_trust_store_revocation
   - revocation_lists
   - tags
-  subcomponentOf: alb
+  subcomponentOf: resourcecomponent:alb
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
