@@ -22,6 +22,7 @@ spec:
   - assumable_roles
   - group_users
   - tags
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

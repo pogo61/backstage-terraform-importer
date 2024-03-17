@@ -69,6 +69,7 @@ spec:
   - associate_web_acl
   - web_acl_arn
   - putin_khuylo
+  subcomponentOf: ''
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

@@ -26,4 +26,5 @@ spec:
   lifecycle: experimental
   owner: platform_team
   providesVariables: []
+  subcomponentOf: ''
   type: terraform

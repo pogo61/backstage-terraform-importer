@@ -21,6 +21,7 @@ spec:
   - description
   - policy
   - tags
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
