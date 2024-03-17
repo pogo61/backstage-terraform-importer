@@ -23,7 +23,6 @@ spec:
   - resourcecomponent:iam-user
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   providesVariables: []

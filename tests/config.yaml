@@ -1,7 +1,5 @@
 env_path: './tests/main.tf'
 environment: test
-existing_envs:
-  - dev
 domain:
   name: infrastructure
   new: true
