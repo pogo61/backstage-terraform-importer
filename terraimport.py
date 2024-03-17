@@ -270,7 +270,7 @@ def terraform_module(path, cat_path, env, module_name, parent, ex_envs:list, gro
         if (parent is not None):
             subComp = parent[0]
         else:
-            subComp = ""
+            subComp = None
 
     if len(ex_envs) > 0:
         if env not in ex_envs:
