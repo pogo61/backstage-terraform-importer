@@ -48,7 +48,7 @@ spec:
   - allow_self_assume_role
   - role_requires_session_name
   - role_session_name
-  subcomponentOf: iam
+  subcomponentOf: resourcecomponent:iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

@@ -33,7 +33,7 @@ spec:
   - oidc_fully_qualified_audiences
   - force_detach_policies
   - allow_self_assume_role
-  subcomponentOf: iam
+  subcomponentOf: resourcecomponent:iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
