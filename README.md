@@ -12,12 +12,14 @@ This Python-based utility has been built to scan your Terraform files and auto-g
 
 depending on what it finds.
 
+You then need to import the YAML files created into Backstage using your preferred method.
+
 ---
 **NOTE**
 This is an opinionated utility and only supports modules defined in the same repo as the base terraform and reachable by the File system
 Or where the module is defined in a remote repo or Terraform Registry, the 'terraform get' command must be run prior to this utility
 
-It also requires you to upgrade the IaC Plugin to v1.1.0 for it's support of the 'spec.parent' attribute
+It also requires you to upgrade the IaC Plugin to v2.1.0 and above for it's support of the new 'spec.xxx' attributes
 
 --- 
 
