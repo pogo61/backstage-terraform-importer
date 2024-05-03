@@ -9,7 +9,6 @@ spec:
   - resource:aws_iam_openid_connect_provider-this
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -20,6 +19,7 @@ spec:
   - client_id_list
   - url
   - additional_thumbprints
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

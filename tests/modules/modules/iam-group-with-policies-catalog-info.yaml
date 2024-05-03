@@ -15,7 +15,6 @@ spec:
   - resource:aws_iam_policy-custom
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -32,6 +31,7 @@ spec:
   - iam_self_management_policy_name_prefix
   - aws_account_id
   - tags
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

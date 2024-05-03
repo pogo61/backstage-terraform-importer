@@ -264,7 +264,13 @@ def terraform_module(path, cat_path, env, module_name, parent, ex_envs:list, gro
 
     # create a list if parent is a single value
     if (parent is not None) and not (isinstance(parent, list)):
+        subComp = parent
         parent = [parent]
+    else:
+        if (parent is not None):
+            subComp = parent[0]
+        else:
+            subComp = None
 
     if len(ex_envs) > 0:
         if env not in ex_envs:
@@ -284,6 +290,7 @@ def terraform_module(path, cat_path, env, module_name, parent, ex_envs:list, gro
         ),
         spec=dict(
             parent=parent,
+            subcomponentOf=subComp,
             type='terraform',
             lifecycle='experimental',
             owner=group_name,

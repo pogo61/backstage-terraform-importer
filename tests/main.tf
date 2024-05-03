@@ -12,9 +12,9 @@ terraform {
   }
 }
 
-module "ecs-cluster-terraform" {
-  source  = "git::https://github.com/pogo61/terraform-ecs-cluster-module.git"
-}
+#module "ecs-cluster-terraform" {
+#  source  = "git::https://github.com/pogo61/terraform-ecs-cluster-module.git"
+#}
 
 module "iam" {
   source  = "terraform-aws-modules/iam/aws"

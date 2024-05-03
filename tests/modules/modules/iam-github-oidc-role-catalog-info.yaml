@@ -10,7 +10,6 @@ spec:
   - resource:aws_iam_role_policy_attachment-this
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -29,6 +28,7 @@ spec:
   - audience
   - subjects
   - provider_url
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

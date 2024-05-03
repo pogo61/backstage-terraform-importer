@@ -9,7 +9,6 @@ spec:
   - resource:aws_iam_policy-policy
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -27,6 +26,7 @@ spec:
   - allow_predefined_sts_actions
   - allow_web_console_services
   - web_console_services
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

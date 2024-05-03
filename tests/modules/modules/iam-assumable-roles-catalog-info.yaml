@@ -14,7 +14,6 @@ spec:
   - resource:aws_iam_role_policy_attachment-readonly
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -48,6 +47,7 @@ spec:
   - readonly_role_tags
   - max_session_duration
   - force_detach_policies
+  subcomponentOf: iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

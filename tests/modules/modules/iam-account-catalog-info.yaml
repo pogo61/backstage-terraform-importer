@@ -10,7 +10,6 @@ spec:
   - resource:aws_iam_account_password_policy-this
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -28,6 +27,7 @@ spec:
   - require_uppercase_characters
   - require_numbers
   - require_symbols
+  subcomponentOf: resourcecomponent:iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

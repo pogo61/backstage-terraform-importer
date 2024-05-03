@@ -10,7 +10,6 @@ spec:
   - resource:aws_iam_role_policy_attachment-custom
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -34,6 +33,7 @@ spec:
   - oidc_fully_qualified_audiences
   - force_detach_policies
   - allow_self_assume_role
+  subcomponentOf: resourcecomponent:iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1

@@ -14,7 +14,6 @@ spec:
   - resource:aws_iam_instance_profile-this
   environment:
   - test
-  - dev
   lifecycle: experimental
   owner: platform_team
   parent:
@@ -49,6 +48,7 @@ spec:
   - allow_self_assume_role
   - role_requires_session_name
   - role_session_name
+  subcomponentOf: resourcecomponent:iam
   type: terraform
 ---
 apiVersion: backstage.io/v1alpha1
